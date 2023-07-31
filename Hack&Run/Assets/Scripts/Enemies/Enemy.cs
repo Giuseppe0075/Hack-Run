@@ -22,4 +22,10 @@ public class Enemy : MonoBehaviour, IClicked
     {
         graphic.color = Color.grey;
     }
+
+    public void onClickOtherAction()
+    {
+        graphic.color = Color.red;
+    }
 }
+

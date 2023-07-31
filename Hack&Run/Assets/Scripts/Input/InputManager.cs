@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     private Camera _mainCamera;
+    private GameObject selectedGameObject;
     // Start is called before the first frame update
     void Awake()
     {
@@ -16,9 +17,20 @@ public class InputManager : MonoBehaviour
     {
         if (!context.started) return;
 
-        RaycastHit2D rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(pos: (Vector3)Mouse.current.position.ReadValue()));
-        if (!rayHit.collider) return;
 
-        rayHit.collider.gameObject.GetComponent<IClicked>().onClickAction();
+        RaycastHit2D rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(pos: (Vector3)Mouse.current.position.ReadValue()));
+        if (!rayHit.collider)
+        {
+            if (selectedGameObject != null)
+                selectedGameObject.GetComponent<IClicked>().onClickOtherAction();
+            selectedGameObject = null;
+            return;
+        }
+        if(selectedGameObject != null && selectedGameObject != rayHit.collider.gameObject)
+        {
+            selectedGameObject.GetComponent<IClicked>().onClickOtherAction();
+        }
+        selectedGameObject = rayHit.collider.gameObject;
+        selectedGameObject.GetComponent<IClicked>().onClickAction();
     }
 }
