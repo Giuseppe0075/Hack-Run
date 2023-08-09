@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
 
 
         RaycastHit2D rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(pos: (Vector3)Mouse.current.position.ReadValue()));
+        //if you click on the screen
         if (!rayHit.collider)
         {
             if (selectedGameObject != null)
@@ -26,6 +27,7 @@ public class InputManager : MonoBehaviour
             selectedGameObject = null;
             return;
         }
+        //if you click on other colliders
         if(selectedGameObject != null && selectedGameObject != rayHit.collider.gameObject)
         {
             selectedGameObject.GetComponent<IClicked>().onClickOtherAction();
